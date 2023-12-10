@@ -56,4 +56,7 @@ RUN adduser \
     appuser
 USER appuser
 
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
 ENTRYPOINT ["dotnet", "MarcosEduardo.dll"]

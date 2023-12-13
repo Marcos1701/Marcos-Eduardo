@@ -54,12 +54,16 @@ namespace MarcosEduardo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("Id,Nome")] Cliente cliente, bool? redirect)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
+                if (redirect == false)
+                {
+                    return View(cliente);
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(cliente);

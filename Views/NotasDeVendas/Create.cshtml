@@ -1,4 +1,4 @@
-@model MarcosEduardo.Models.NotaDeVenda
+@model MarcosEduardo.Models.NotaDeVenda;
 
 @{
     ViewData["Title"] = "Create";
@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>NotaDeVenda</h4>
+<h4>Nota De Venda</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,34 +14,90 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Data" class="control-label"></label>
-                <input asp-for="Data" class="form-control" />
+                @* define a data atual como valor padrão *@
+                <input asp-for="Data" class="form-control" data-val="true" id="Data" name="Data" type="date"
+                    asp-format="{0:dd/MM/yyyy}" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
+                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status" id="Status"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class ="form-control" asp-items="ViewBag.ClienteId"></select>
+                @* define o valor padrão como o id do primeiro cliente *@
+                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+                    @* caso não tenha nenhum cliente cadastrado, exibe a mensagem abaixo
+                    <option value="">Nenhum cliente cadastrado</option>*@
+                    @if (ViewBag.ClienteId == null)
+                    {
+                        <option value="" selected disabled>Nenhum cliente cadastrado</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClienteModal"
+                    onclick="showModalAddCliente()">
+                    Adicionar Cliente
+                </button>
             </div>
             <div class="form-group">
                 <label asp-for="VendedorId" class="control-label"></label>
-                <select asp-for="VendedorId" class ="form-control" asp-items="ViewBag.VendedorId"></select>
+                <select asp-for="VendedorId" class="form-control" asp-items="ViewBag.VendedorId"></select>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vendedorModal">
+                    Adicionar Vendedor
+                </button>
             </div>
             <div class="form-group">
                 <label asp-for="TransportadoraId" class="control-label"></label>
-                <select asp-for="TransportadoraId" class ="form-control" asp-items="ViewBag.TransportadoraId"></select>
+                <select asp-for="TransportadoraId" class="form-control" asp-items="ViewBag.TransportadoraId"></select>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transportadoraModal">
+                    Adicionar Transportadora
+                </button>
             </div>
             <div class="form-group">
                 <label asp-for="TipoDePagamentoId" class="control-label"></label>
-                <select asp-for="TipoDePagamentoId" class ="form-control" asp-items="ViewBag.TipoDePagamentoId"></select>
+                <select asp-for="TipoDePagamentoId" class="form-control" asp-items="ViewBag.TipoDePagamentoId"></select>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tipoDePagamentoModal">
+                    Adicionar Tipo de Pagamento
+                </button>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+
+    </div>
+</div>
+
+<div class="modal fade" id="addClienteModal" tabindex="-1" role="dialog" aria-labelledby="addClienteModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false" data-target="#addClienteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClienteModalLabel">Adicionar Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" asp-controller="Clientes" id="addClienteForm">
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label class="control-label" id="Nome-Cli"></label>
+                        <input class="form-control" id="Nome-Cli-input" placeholder="Nome do Cliente" type="text" />
+                        <span class="text-danger" id="Nome-Cli-validation"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        onclick="showModalAddCliente()">Fechar</button>
+                    <button type="submit" class="btn btn-primary" onclick="showModalAddCliente()">Salvar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -50,5 +106,83 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        // apos o submit do form de adicionar cliente, verifica se o cliente foi adicionado com sucesso, se sim, atualiza a lista de clientes
+        $('#addClienteForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'Clientes/Create',
+                type: 'POST',
+                data: {
+                    cliente: {
+                        nome: $('#Nome-Cli-input').val()
+                    },
+                    redirect: false
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $('#addClienteModal').modal('hide');
+                        $.ajax({
+                            url: '/NotasDeVenda/GetClientes',
+                            type: 'GET',
+                            success: function (data) {
+                                $('#ClienteId').empty();
+                                $('#ClienteId').append('<option value="" selected disabled>Nenhum cliente cadastrado</option>');
+                                $.each(data, function (i, item) {
+                                    $('#ClienteId').append('<option value="' + item.id + '">' + item.nome + '</option>');
+                                });
+                            }
+                        });
+                    } else {
+                        $('#Nome-Cli-validation').text(data.message);
+                    }
+                }
+            });
+        });
+
+        function showModalAddCliente() {
+            //verifica se esta exibindo o modal de adicionar cliente, se não estiver exibindo, exibe, se estiver exibindo, fecha
+            if ($('#addClienteModal').is(':visible')) {
+                $('#addClienteModal').modal('hide');
+            } else {
+                $('#addClienteModal').modal('show');
+            }
+        }
+
+        function showModalAddVendedor() {
+            if ($('#vendedorModal').is(':visible')) {
+                $('#vendedorModal').modal('hide');
+            } else {
+                $('#vendedorModal').modal('show');
+            }
+
+        }
+
+        function showModalAddTransportadora() {
+            if ($('#transportadoraModal').is(':visible')) {
+                $('#transportadoraModal').modal('hide');
+            } else {
+                $('#transportadoraModal').modal('show');
+            }
+        }
+
+        function showModalAddTipoDePagamento() {
+            if ($('#tipoDePagamentoModal').is(':visible')) {
+                $('#tipoDePagamentoModal').modal('hide');
+            } else {
+                $('#tipoDePagamentoModal').modal('show');
+            }
+        }
+
+        // evitar que redirecione para a pagina de clientes ao clicar no botão de salvar cliente
+        $('#addClienteModal').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
+        });
+    </script>
+
 }

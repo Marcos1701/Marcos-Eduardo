@@ -1,6 +1,5 @@
-FROM mysql:latest
+FROM mariadb:latest
 ENV MYSQL_ROOT_PASSWORD ifpi
 ENV MYSQL_DATABASE appcsharp
-ENV MYSQL_USER root
-ENV MYSQL_PASSWORD ifpi
 EXPOSE 3306
+COPY ./ /docker-entrypoint-initdb.d/

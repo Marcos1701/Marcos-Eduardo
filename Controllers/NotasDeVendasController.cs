@@ -1,8 +1,4 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -51,11 +47,25 @@ namespace MarcosEduardo.Controllers
         // GET: NotasDeVendas/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome");
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamento, "Id", "Discriminator");
-            ViewData["TransportadoraId"] = new SelectList(_context.Transportadoras, "Id", "Nome");
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "Id", "Nome");
-            return View();
+            // Cria uma nova NotaDeVenda com Status definido como Ativo
+            var notaDeVenda = new NotaDeVenda
+            {
+                Status = StatusNotaDeVenda.Ativo
+            };
+
+            // Cria o SelectList para Status
+            ViewBag.Status = new SelectList(Enum.GetValues(typeof(StatusNotaDeVenda)));
+            ViewBag.ClienteId = _context.Clientes.Any() ? new SelectList(_context.Clientes, "Id", "Nome") : null;
+            ViewBag.TipoDePagamentoId = _context.TiposDePagamento.Any() ? new SelectList(_context.TiposDePagamento, "Id", "Discriminator") : null;
+            ViewBag.TransportadoraId = _context.Transportadoras.Any() ? new SelectList(_context.Transportadoras, "Id", "Nome") : null;
+            ViewBag.VendedorId = _context.Vendedores.Any() ? new SelectList(_context.Vendedores, "Id", "Nome") : null;
+            ViewBag.Status = new SelectList(Enum.GetValues(typeof(StatusNotaDeVenda)), StatusNotaDeVenda.Ativo);
+            // modelos para utilização nos models de cliente, vendedor, transportadora e tipo de pagamento
+            ViewBag.ClienteModel = new Cliente();
+            ViewBag.VendedorModel = new Vendedor();
+            ViewBag.TransportadoraModel = new Transportadora();
+            ViewBag.TipoDePagamentoModel = new TipoDePagamento();
+            return View(notaDeVenda);
         }
 
         // POST: NotasDeVendas/Create

@@ -44,16 +44,26 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                    @if (item.Cliente != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Vendedor.Nome)
+                    @if (item.Vendedor != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Vendedor.Nome)
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Transportadora.Nome)
+                    @if (item.Transportadora != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Transportadora.Nome)
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TipoDePagamento.Id)
+
+                    @Html.DisplayFor(modelItem => item.TipoDePagamentoId)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

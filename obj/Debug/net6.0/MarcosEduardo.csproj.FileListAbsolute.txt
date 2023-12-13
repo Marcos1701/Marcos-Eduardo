@@ -262,3 +262,8 @@ C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\obj\Debug\net6.0\refint\Mar
 C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\obj\Debug\net6.0\MarcosEduardo.pdb
 C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\obj\Debug\net6.0\MarcosEduardo.genruntimeconfig.cache
 C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\obj\Debug\net6.0\ref\MarcosEduardo.dll
+C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\bin\Debug\net6.0\Publish_Archives\web.config
+C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\bin\Debug\net6.0\Publish_Archives\appsettings.Development.json
+C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\bin\Debug\net6.0\Publish_Archives\appsettings.json
+C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\bin\Debug\net6.0\Publish_Archives\MarcosEduardo.deps.json
+C:\Users\marco\OneDrive - MSFT\Desktop\MarcosEduardo\bin\Debug\net6.0\Publish_Archives\MarcosEduardo.runtimeconfig.json

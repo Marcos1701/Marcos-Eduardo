@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 string mysqlconnection = "server=localhost;port=3307;database=appcsharp;uid=root;pwd=ifpi;"; // coloquei aqui, o dotnet não estava lendo a string de configuração presente em 'appsettings.json'
+//caso dê erro ao conectar com o banco de dados, comente a linha abaixo e descomente a linha acima
 // string mysqlconnection =
 // builder.Configuration.GetConnectionString("MyDbContext");
 

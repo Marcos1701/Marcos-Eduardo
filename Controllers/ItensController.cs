@@ -49,8 +49,15 @@ namespace MarcosEduardo.Controllers
         // GET: Itens/Create
         public IActionResult Create()
         {
-            ViewData["NotaDeVendaId"] = new SelectList(_context.NotasDeVendas, "Id", "Id");
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "Id", "Descricao");
+
+            ViewBag.NotaDeVendaId = new SelectList(_context.NotasDeVendas, "Id", "Id");
+            ViewBag.ProdutoId = new SelectList(_context.Produtos, "Id", "Descricao");
+            ViewBag.Quantidade = 1;
+            // Preco inicial é igual ao valor do produto
+            ViewBag.Preco = _context.Produtos.Any() ? _context.Produtos.FirstOrDefault().Preco : 0;
+
+            ViewBag.Percentual = 0;
+
             return View();
         }
 

@@ -11,7 +11,6 @@ namespace MarcosEduardo.Models
         [Display(Name = "Nome do Produto")]
         public string? Nome { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Descrição do Produto")]
         public string? Descricao { get; set; }
 
@@ -31,10 +30,13 @@ namespace MarcosEduardo.Models
         public int MarcaId { get; set; }
         public Marca? Marca { get; set; }
 
-        public Produto(string nome, string descricao, double preco, int quantidade, int marcaId)
+        public Produto(string nome, string? descricao, double preco, int quantidade, int marcaId)
         {
             Nome = nome;
-            Descricao = descricao;
+            if (descricao != null)
+            {
+                Descricao = descricao;
+            }
             Preco = preco;
             Quantidade = quantidade;
             MarcaId = marcaId;

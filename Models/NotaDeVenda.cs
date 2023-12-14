@@ -17,31 +17,6 @@ namespace MarcosEduardo.Models
         [Display(Name = "Cliente")]
         public int ClienteId { get; set; }
         public Cliente? Cliente { get; set; }
-        // exibir o nome do cliente ao invés do id ao adicionar uma nota de venda
-        // no banco de dados, o id do cliente é armazenado, mas na interface, o nome
-        // do cliente é exibido
-        // para isso, é necessário adicionar o seguinte código no arquivo
-        // Controllers/NotaDeVendaController.cs:
-        // ViewBag.ClienteId = new SelectList(_context.Clientes, "Id", "Nome");
-        // e no arquivo Views/NotaDeVenda/Create.cshtml:
-        // <div class="form-group">
-        //     <label asp-for="ClienteId" class="control-label"></label>
-        //     <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-        // </div>
-        // e no arquivo Views/NotaDeVenda/Edit.cshtml:
-        // <div class="form-group">
-        //    <label asp-for="ClienteId" class="control-label"></label>
-        //   <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-        // </div>
-        // e no arquivo Views/NotaDeVenda/Details.cshtml:
-        // <div class="form-group">
-        //    <label asp-for="ClienteId" class="control-label"></label>
-        //   <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-        // </div>
-        // e no arquivo Views/NotaDeVenda/Index.cshtml:
-        // <th>
-        //    @Html.DisplayNameFor(model => model.Cliente)
-        // </th>
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Vendedor")]

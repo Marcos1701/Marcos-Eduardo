@@ -24,44 +24,66 @@
                 <select asp-for="Status" class="form-control" asp-items="ViewBag.Status" id="Status"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                @* define o valor padrão como o id do primeiro cliente *@
-                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
-                    @* caso não tenha nenhum cliente cadastrado, exibe a mensagem abaixo
-                    <option value="">Nenhum cliente cadastrado</option>*@
-                    @if (ViewBag.ClienteId == null)
-                    {
-                        <option value="" selected disabled>Nenhum cliente cadastrado</option>
-                    }
-                </select>
+
+            <div class="row margin-bottom-10">
+                <div class="form-group col-md-6">
+                    <label asp-for="ClienteId" class="control-label"></label>
+                    @* define o valor padrão como o id do primeiro cliente *@
+                    <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId as SelectList">
+                        @* caso não tenha nenhum cliente cadastrado, exibe a mensagem abaixo
+                        <option value="">Nenhum cliente cadastrado</option>*@
+                        @if (ViewBag.ClienteId == null)
+                        {
+                            <option value="" selected disabled>Nenhum cliente cadastrado</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-md-6 align-self-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClienteModal"
+                        onclick="showModalAddCliente()">
+                        Adicionar Cliente
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClienteModal"
-                    onclick="showModalAddCliente()">
-                    Adicionar Cliente
-                </button>
+            <div class="row margin-bottom-10">
+                <div class="form-group col-md-6">
+                    <label asp-for="VendedorId" class="control-label"></label>
+                    <select asp-for="VendedorId" class="form-control" asp-items="ViewBag.VendedorId"></select>
+                </div>
+                <div class="form-group col-md-6 align-self-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addVendedorModal"
+                        onclick="showModalAddVendedor()">
+                        Adicionar Vendedor
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="VendedorId" class="control-label"></label>
-                <select asp-for="VendedorId" class="form-control" asp-items="ViewBag.VendedorId"></select>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vendedorModal">
-                    Adicionar Vendedor
-                </button>
+
+            <div class="row margin-bottom-10">
+                <div class="form-group col-md-6">
+                    <label asp-for="TransportadoraId" class="control-label"></label>
+                    <select asp-for="TransportadoraId" class="form-control"
+                        asp-items="ViewBag.TransportadoraId"></select>
+                </div>
+                <div class="form-group col-md-6 align-self-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#addtransportadoraModal" onclick="showModalAddTransportadora()">
+                        Adicionar Transportadora
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TransportadoraId" class="control-label"></label>
-                <select asp-for="TransportadoraId" class="form-control" asp-items="ViewBag.TransportadoraId"></select>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transportadoraModal">
-                    Adicionar Transportadora
-                </button>
-            </div>
-            <div class="form-group">
-                <label asp-for="TipoDePagamentoId" class="control-label"></label>
-                <select asp-for="TipoDePagamentoId" class="form-control" asp-items="ViewBag.TipoDePagamentoId"></select>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tipoDePagamentoModal">
-                    Adicionar Tipo de Pagamento
-                </button>
+
+            <div class="row margin-bottom-10">
+                <div class="form-group col-md-6">
+                    <label asp-for="TipoDePagamentoId" class="control-label"></label>
+                    <select asp-for="TipoDePagamentoId" class="form-control"
+                        asp-items="ViewBag.TipoDePagamentoId"></select>
+                </div>
+                <div class="form-group col-md-6 align-self-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#addtipoPagamentoModal" onclick="showModalAddTipoDePagamento()">
+                        Adicionar Tipo de Pagamento
+                    </button>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -77,17 +99,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addClienteModalLabel">Adicionar Cliente</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    onclick="showModalAddCliente()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Create" asp-controller="Clientes" id="addClienteForm">
+            <form id="addClienteForm" asp-action="Create" asp-controller="ClientesController">
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group">
                         <label class="control-label" id="Nome-Cli"></label>
-                        <input class="form-control" id="Nome-Cli-input" placeholder="Nome do Cliente" type="text" />
+                        <input class="form-control" id="Nome-Cli-input" name="Nome" placeholder="Nome do Cliente"
+                            type="text" />
                         <span class="text-danger" id="Nome-Cli-validation"></span>
                     </div>
                 </div>
@@ -97,6 +121,104 @@
                     <button type="submit" class="btn btn-primary" onclick="showModalAddCliente()">Salvar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Vendedor -->
+<div class="modal fade" id="addVendedorModal" tabindex="-1" role="dialog" aria-labelledby="addVendedorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addVendedorModalLabel">Adicionar Vendedor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"
+                    onclick="showModalAddVendedor()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addVendedorForm" action="/Vendedor/Create" method="post">
+                    <div class="form-group">
+                        <label for="Nome-input" class="col-form-label">Nome:</label>
+                        <input type="text" class="form-control" id="Nome-input" name="Nome" required>
+                        <span id="Nome-validation" class="text-danger"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="showModalAddVendedor()">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addtransportadoraModal" tabindex="-1" role="dialog"
+    aria-labelledby="addtransportadoraModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transportadoraModalLabel">Adicionar Transportadora</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"
+                    onclick="showModalAddTransportadora()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addTransportadoraForm" asp-action="Create" asp-controller="TransportadorasController">
+                    <div class="form-group">
+                        <label for="Nome-Trans-input" class="col-form-label">Nome da Transportadora:</label>
+                        <input type="text" class="form-control" id="Nome-Trans-input" name="Nome" required>
+                        <span id="Nome-Trans-validation" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="showModalAddTransportadora()">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addtipoPagamentoModal" tabindex="-1" role="dialog"
+    aria-labelledby="addtipoPagamentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addtipoPagamentoModalLabel">Adicionar Tipo de Pagamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"
+                    onclick="showModalAddTipoDePagamento()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addTipoPagamentoForm" action="/TipoDePagamento/Create" method="post">
+                    <div class="form-group">
+                        <label for="NomeDoCobrado-input" class="col-form-label">Nome do Cobrado:</label>
+                        <input type="text" class="form-control" id="NomeDoCobrado-input" name="NomeDoCobrado" required>
+                        <span id="NomeDoCobrado-validation" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="InformacoesAdicionais-input" class="col-form-label">Informações Adicionais:</label>
+                        <textarea class="form-control" id="InformacoesAdicionais-input"
+                            name="InformacoesAdicionais"></textarea>
+                        <span id="InformacoesAdicionais-validation" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="showModalAddTipoDePagamento()">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -112,37 +234,132 @@
 
     <script>
 
-        // apos o submit do form de adicionar cliente, verifica se o cliente foi adicionado com sucesso, se sim, atualiza a lista de clientes
+
+        // apos o submit do form de adicionar cliente, verifica se o form é valido, se for, envia o form, se não for, exibe as mensagens de erro
         $('#addClienteForm').submit(function (e) {
             e.preventDefault();
-            $.ajax({
-                url: 'Clientes/Create',
-                type: 'POST',
-                data: {
-                    cliente: {
-                        nome: $('#Nome-Cli-input').val()
-                    },
-                    redirect: false
-                },
-                success: function (data) {
-                    if (data.success) {
+            var form = $(this);
+            var url = '@Url.Action("Create", "Clientes")';
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (data) {
+                        // o controller retorna a view index de clientes completa, então é necessário ocultar o modal e atualizar o select de clientes
                         $('#addClienteModal').modal('hide');
-                        $.ajax({
-                            url: '/NotasDeVenda/GetClientes',
-                            type: 'GET',
-                            success: function (data) {
-                                $('#ClienteId').empty();
-                                $('#ClienteId').append('<option value="" selected disabled>Nenhum cliente cadastrado</option>');
-                                $.each(data, function (i, item) {
-                                    $('#ClienteId').append('<option value="' + item.id + '">' + item.nome + '</option>');
-                                });
-                            }
-                        });
-                    } else {
-                        $('#Nome-Cli-validation').text(data.message);
+
+                        // alualiza a pagina
+                        window.location.reload(); // solução temporaria, pois não está atualizando o select de clientes
+
                     }
-                }
-            });
+                });
+            } else {
+                $('#Nome-Cli-validation').text($('#Nome-Cli-input').val() == '' ? 'Campo obrigatório' : '');
+                $('#Nome-Cli').text($('#Nome-Cli-input').val() == '' ? 'Nome do Cliente' : '');
+            }
+
+        });
+
+        // apos o submit do form de adicionar vendedor, verifica se o form é valido, se for, envia o form, se não for, exibe as mensagens de erro
+        $('#addVendedorForm').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = '@Url.Action("Create", "Vendedores")';
+
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (data) {
+                        // o controller retorna a view index de vendedores completa, então é necessário ocultar o modal e atualizar o select de vendedores
+                        $('#addVendedorModal').modal('hide');
+
+                        // alualiza a pagina
+                        window.location.reload(); // solução temporaria, pois não está atualizando o select de vendedores
+
+                    }
+                });
+            } else {
+                $('#Nome-Vend-validation').text($('#Nome-Vend-input').val() == '' ? 'Campo obrigatório' : '');
+                $('#Nome-Vend').text($('#Nome-Vend-input').val() == '' ? 'Nome do Vendedor' : '');
+            }
+
+        });
+
+        // apos o submit do form de adicionar transportadora, verifica se o form é valido, se for, envia o form, se não for, exibe as mensagens de erro
+        $("#addTransportadoraForm").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = '@Url.Action("Create", "Transportadoras")';
+
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (data) {
+                        // o controller retorna a view index de transportadoras completa, então é necessário ocultar o modal e atualizar o select de transportadoras
+                        $('#transportadoraModal').modal('hide');
+
+                        // alualiza a pagina
+                        window.location.reload(); // solução temporaria, pois não está atualizando o select de transportadoras
+                    }
+                });
+            }
+            else {
+                $("#Nome-Trans-validation").text($('#Nome-Trans-input').val() == '' ? 'Campo obrigatório' : '');
+                $("#Nome-Trans-input").text('Nome da Transportadora');
+            }
+        });
+
+        // após o submit do form de adicionar tipo de pagamento, verifica se o form é válido, se for, envia o form, se não for, exibe as mensagens de erro
+        $('#addTipoPagamentoForm').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = '@Url.Action("Create", "TiposDePagamentos")';
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (data) {
+                        // o controller retorna a view index de tipo de pagamento completa, então é necessário ocultar o modal e atualizar o select de tipo de pagamento
+                        $('#addtipoPagamentoModal').modal('hide');
+
+                        // atualiza a página
+                        window.location.reload(); // solução temporária, pois não está atualizando o select de tipo de pagamento
+                    },
+                    error: function (data) {
+                        // você pode adicionar aqui o código para lidar com erros
+                    }
+                });
+            } else {
+                $('#NomeDoCobrado-validation').text($('#NomeDoCobrado-input').val() == '' ? 'O campo Nome do Cobrado é obrigatório' : '');
+                // não é necessário validar o campo Informações Adicionais, pois ele não é obrigatório
+            }
+        });
+
+
+        // evitar que redirecione para a pagina de clientes ao clicar no botão de salvar cliente
+        $('#addClienteForm').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
+        });
+
+        // evitar que redirecione para a pagina de vendedores ao clicar no botão de salvar vendedor
+        $('#addVendedorForm').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
+        });
+
+        // evitar que redirecione para a pagina de transportadoras ao clicar no botão de salvar transportadora
+        $('#addTransportadoraForm').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
+        });
+
+        // evitar que redirecione para a pagina de tipo de pagamento ao clicar no botão de salvar tipo de pagamento
+        $('#addTipoPagamentoForm').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
         });
 
         function showModalAddCliente() {
@@ -155,34 +372,30 @@
         }
 
         function showModalAddVendedor() {
-            if ($('#vendedorModal').is(':visible')) {
-                $('#vendedorModal').modal('hide');
+            var modal = $('#addVendedorModal');
+            if (modal.hasClass('show')) {
+                modal.modal('hide');
             } else {
-                $('#vendedorModal').modal('show');
+                modal.modal('show');
             }
-
         }
 
+
         function showModalAddTransportadora() {
-            if ($('#transportadoraModal').is(':visible')) {
-                $('#transportadoraModal').modal('hide');
+            if ($('#addtransportadoraModal').is(':visible')) {
+                $('#addtransportadoraModal').modal('hide');
             } else {
-                $('#transportadoraModal').modal('show');
+                $('#addtransportadoraModal').modal('show');
             }
         }
 
         function showModalAddTipoDePagamento() {
-            if ($('#tipoDePagamentoModal').is(':visible')) {
-                $('#tipoDePagamentoModal').modal('hide');
+            if ($('#addtipoPagamentoModal').is(':visible')) {
+                $('#addtipoPagamentoModal').modal('hide');
             } else {
-                $('#tipoDePagamentoModal').modal('show');
+                $('#addtipoPagamentoModal').modal('show');
             }
         }
-
-        // evitar que redirecione para a pagina de clientes ao clicar no botão de salvar cliente
-        $('#addClienteModal').on('hidden.bs.modal', function (e) {
-            e.preventDefault();
-        });
     </script>
 
 }

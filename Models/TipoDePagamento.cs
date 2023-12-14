@@ -8,7 +8,7 @@ namespace MarcosEduardo.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Nome do Cobrado")]
-        public string? NomeDoCobrado { get; set; }
+        public string? NomeDoCobrado { get; set; } // trata-se de um nome de pessoa ou empresa, que será cobrado
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "Informações Adicionais")]

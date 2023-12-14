@@ -56,15 +56,10 @@ namespace MarcosEduardo.Controllers
             // Cria o SelectList para Status
             ViewBag.Status = new SelectList(Enum.GetValues(typeof(StatusNotaDeVenda)));
             ViewBag.ClienteId = _context.Clientes.Any() ? new SelectList(_context.Clientes, "Id", "Nome") : null;
-            ViewBag.TipoDePagamentoId = _context.TiposDePagamento.Any() ? new SelectList(_context.TiposDePagamento, "Id", "Discriminator") : null;
             ViewBag.TransportadoraId = _context.Transportadoras.Any() ? new SelectList(_context.Transportadoras, "Id", "Nome") : null;
             ViewBag.VendedorId = _context.Vendedores.Any() ? new SelectList(_context.Vendedores, "Id", "Nome") : null;
+            ViewBag.TipoDePagamentoId = _context.TiposDePagamento.Any() ? new SelectList(_context.TiposDePagamento, "Id", "NomeDoCobrado") : new SelectList(new List<TipoDePagamento>());
             ViewBag.Status = new SelectList(Enum.GetValues(typeof(StatusNotaDeVenda)), StatusNotaDeVenda.Ativo);
-            // modelos para utilização nos models de cliente, vendedor, transportadora e tipo de pagamento
-            ViewBag.ClienteModel = new Cliente();
-            ViewBag.VendedorModel = new Vendedor();
-            ViewBag.TransportadoraModel = new Transportadora();
-            ViewBag.TipoDePagamentoModel = new TipoDePagamento();
             return View(notaDeVenda);
         }
 
@@ -82,7 +77,7 @@ namespace MarcosEduardo.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome", notaDeVenda.ClienteId);
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamento, "Id", "Discriminator", notaDeVenda.TipoDePagamentoId);
+            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamento, "Id", "NomeDoCobrado", notaDeVenda.TipoDePagamentoId);
             ViewData["TransportadoraId"] = new SelectList(_context.Transportadoras, "Id", "Nome", notaDeVenda.TransportadoraId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "Id", "Nome", notaDeVenda.VendedorId);
             return View(notaDeVenda);
@@ -141,7 +136,7 @@ namespace MarcosEduardo.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Nome", notaDeVenda.ClienteId);
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamento, "Id", "Discriminator", notaDeVenda.TipoDePagamentoId);
+            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamento, "Id", "NomeDoCobrado", notaDeVenda.TipoDePagamentoId);
             ViewData["TransportadoraId"] = new SelectList(_context.Transportadoras, "Id", "Nome", notaDeVenda.TransportadoraId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "Id", "Nome", notaDeVenda.VendedorId);
             return View(notaDeVenda);
@@ -178,6 +173,12 @@ namespace MarcosEduardo.Controllers
             _context.NotasDeVendas.Remove(notaDeVenda);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        //GET: NotasDeVendas/Clientes
+        public async Task<IActionResult> Clientes()
+        {
+            return View(await _context.Clientes.ToListAsync());
         }
 
         private bool NotaDeVendaExists(int id)

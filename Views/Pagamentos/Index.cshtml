@@ -38,7 +38,14 @@
                     @Html.DisplayFor(modelItem => item.Valor)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Pago)
+                    @if (item.Pago)
+                    {
+                        <p>SIM</p>
+                    }
+                    else
+                    {
+                        <p>NÃO</p>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NotaDeVendaId)
